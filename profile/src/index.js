@@ -2,6 +2,42 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './styles.css';
 
+
+const skills = [
+  {
+    skill: "HTML+CSS",
+    level: "advanced",
+    color: "#2662EA"
+  },
+  {
+    skill: "JavaScript",
+    level: "advanced",
+    color: "#EFD81D"
+  },
+  {
+    skill: "Web Design",
+    level: "advanced",
+    color: "#C3DCAF"
+  },
+  {
+    skill: "Git and GitHub",
+    level: "intermediate",
+    color: "#E84F33"
+  },
+  {
+    skill: "React",
+    level: "advanced",
+    color: "#60DAFB"
+  },
+  {
+    skill: "Svelte",
+    level: "begginer",
+    color: "#FF3800"
+  },
+];
+
+// based on level display one of emoji
+
 function App() {
   return (
     <div className="card">
@@ -33,37 +69,33 @@ function Intro() {
 }
 
 function SkillList() {
+
   return (
     <div className='skill-list'>
-      <Skill 
-          skill='JS'
-          color='red'
-          emoji='💪'
-        />
-        <Skill
-          skill='HTML/CSS'
-          color='lightblue'
-          emoji='💪'
-        />
-        <Skill
-          skill='Python'
-          color='yellow'
-          emoji='😎'
-        />
-        <Skill
-          skill='React'
-          color='lightgreen'
-          emoji='😎'
-        />
+      {skills.map(skill => (
+        <Skill skillObj={skill} key={skill.skill} />
+      ))}
     </div>
   )
 }
 
-function Skill(props) {
+function Skill({ skillObj }) {
+  // let emoji = '💪';
+
+  // if (skillObj.level === 'intermediate') {
+  //   emoji = '👍';
+  // } else if (skillObj.level === 'beginner') {
+  //   emoji = '👶';
+  // }
+
   return (
-     <div style={{backgroundColor: props.color}} className='skill'>
-      <span> {props.skill} </span>
-      <span> {props.emoji} </span>
+     <div style={{backgroundColor: skillObj.color}} className='skill'>
+      <span> {skillObj.skill} </span>
+      <span> 
+        {skillObj.level === 'begginer' && '👶'}
+        {skillObj.level === 'intermediate' && '👍'}
+        {skillObj.level === 'advanced' && '💪'} 
+      </span>
     </div>
   )
 }

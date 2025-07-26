@@ -1,66 +1,51 @@
-// import { StrictMode } from "react";
-// import { createRoot } from "react-dom/client";
-
-// import App from "./App";
-
-// const rootElement = document.getElementById("root");
-// const root = createRoot(rootElement);
-
-// root.render(
-//   <StrictMode> 
-//     <App />
-//   </StrictMode>
-// );
-
-
-import React, { useState } from "react";
+import React from "react";
 import ReactDOM from "react-dom/client";
 import './index.css';
 
-// const pizzaData = [
-//   {
-//     name: "Focaccia",
-//     ingredients: "Bread with italian olive oil and rosemary",
-//     price: 6,
-//     photoName: "pizzas/focaccia.jpg",
-//     soldOut: false,
-//   },
-//   {
-//     name: "Pizza Margherita",
-//     ingredients: "Tomato and mozarella",
-//     price: 10,
-//     photoName: "pizzas/margherita.jpg",
-//     soldOut: false,
-//   },
-//   {
-//     name: "Pizza Spinaci",
-//     ingredients: "Tomato, mozarella, spinach, and ricotta cheese",
-//     price: 12,
-//     photoName: "pizzas/spinaci.jpg",
-//     soldOut: false,
-//   },
-//   {
-//     name: "Pizza Funghi",
-//     ingredients: "Tomato, mozarella, mushrooms, and onion",
-//     price: 12,
-//     photoName: "pizzas/funghi.jpg",
-//     soldOut: false,
-//   },
-//   {
-//     name: "Pizza Salamino",
-//     ingredients: "Tomato, mozarella, and pepperoni",
-//     price: 15,
-//     photoName: "pizzas/salamino.jpg",
-//     soldOut: true,
-//   },
-//   {
-//     name: "Pizza Prosciutto",
-//     ingredients: "Tomato, mozarella, ham, aragula, and burrata cheese",
-//     price: 18,
-//     photoName: "pizzas/prosciutto.jpg",
-//     soldOut: false,
-//   },
-// ];
+const pizzaData = [
+  {
+    name: "Focaccia",
+    ingredients: "Bread with italian olive oil and rosemary",
+    price: 6,
+    photoName: "pizzas/focaccia.jpg",
+    soldOut: false,
+  },
+  {
+    name: "Pizza Margherita",
+    ingredients: "Tomato and mozarella",
+    price: 10,
+    photoName: "pizzas/margherita.jpg",
+    soldOut: false,
+  },
+  {
+    name: "Pizza Spinaci",
+    ingredients: "Tomato, mozarella, spinach, and ricotta cheese",
+    price: 12,
+    photoName: "pizzas/spinaci.jpg",
+    soldOut: false,
+  },
+  {
+    name: "Pizza Funghi",
+    ingredients: "Tomato, mozarella, mushrooms, and onion",
+    price: 12,
+    photoName: "pizzas/funghi.jpg",
+    soldOut: false,
+  },
+  {
+    name: "Pizza Salamino",
+    ingredients: "Tomato, mozarella, and pepperoni",
+    price: 15,
+    photoName: "pizzas/salamino.jpg",
+    soldOut: true,
+  },
+  {
+    name: "Pizza Prosciutto",
+    ingredients: "Tomato, mozarella, ham, aragula, and burrata cheese",
+    price: 18,
+    photoName: "pizzas/prosciutto.jpg",
+    soldOut: false,
+  },
+];
 
 // each component can return only one element
 // we can nest elements inside other elements
@@ -68,16 +53,18 @@ import './index.css';
 function App() {
   return (
     <div className="container">
-    <Header />
-    <Menu />
-    <Footer />
+      <Header />
+      <Menu />
+      <Footer />
     </div>
   );  
 }
 
 function Header() {
+  
   // the easiest way to style a compononent (create an object for each of componenet we want to syle)
- // const style = { color: 'red', fontSize: '48px', textTransform: 'uppercase' };
+  // const style = { color: 'red', fontSize: '48px', textTransform: 'uppercase' };
+  
   const style = {};
 
   return (
@@ -88,22 +75,48 @@ function Header() {
 }
 
 function Menu() {
+  const pizzas = pizzaData;
+ // const pizzas = []; // to test null case
+  const numPizzas = pizzas.length;
+
+  // !! for conditional rendering we need to use boolean value
+  // and operator && or ? : (ternaries)
+  // advantage of ternaries -> we can display some alternative 
+
   return (
     <main className="menu">
       <h2>Our menu</h2>
-      <Pizza 
-        name='Pizza Spinaci' 
-        ingredients='Tomato, mozarella, spinach, and ricotta cheese' 
-        photoName='pizzas/spinaci.jpg'
-        price={10}
-      />
-      <Pizza
-        name='Pizza Funghi' 
-        ingredients='Tomato, mozarella, mushrooms, and onion'
-        photoName='pizzas/funghi.jpg'
-        price={12}
-      />
 
+
+      {/*
+      
+      ul -> unordered list
+      li -> list item
+      
+      rendering list => using map method on array (it will create a new array
+      and we pass as a propt an Object)
+
+      
+      <> </> -> react fragment to group some elements without leaving any trace in the HTML
+
+      */}
+
+      {numPizzas > 0 ? 
+      (
+      <> 
+        <p>
+          Authentic Italian cuisine. 6 creative dishes to choose from. 
+          All from our stone oven, all organic, all delicious.
+        </p>
+
+        <ul className="pizzas">
+          {pizzas.map(pizza => (
+            <Pizza pizzaObj={pizza} key={pizza.name} />
+            ))}
+          </ul> 
+      </>
+      ) : (<p> We're still working on our menu. Please come back later :) </p>
+      )}
     </main>
     );
 }
@@ -113,46 +126,51 @@ function Menu() {
 //  1. We pass the props into the component
 //  2. We receive the props in the component that we pass them into.
 //
-// order of props is irrelevant
+//  order of props is irrelevant
 // 
 // */
-function Pizza(props) {
-  console.log(props);
+
+// !! we can destruct props into an object { obj }
+function Pizza({ pizzaObj }) {
 
   return (
-    <div className="pizza">
-      <img src={props.photoName} alt={props.name}/>
+    <li className={`pizza ${pizzaObj.soldOut ? 'sold-out' : ''}`}>
+      <img src={pizzaObj.photoName} alt={pizzaObj.name}/>
       <div>
-      <h3>{props.name}</h3>
-      <p>{props.ingredients}</p>
-      <span>{props.price}</span>
+      <h3>{pizzaObj.name}</h3>
+      <p>{pizzaObj.ingredients}</p>
+      <span>{pizzaObj.soldOut ? 'SOLD OUT' : pizzaObj.price}</span>
       </div>
-    </div>
+    </li>
   );
 }
 
 function Footer() {
+  // --- conditional rendering --- 
+
   const hour = new Date().getHours();
   const openHour = 12;
   const closeHour = 22;
   const isOpen = hour >= openHour && hour <= closeHour;
   
-  //console.log(isOpen);
-
-  // if (hour >= openHour && hour <= closeHour) alert("We're currently open!")
-  //   else alert("Sorry we're closed");
-
-  const [time, setTime] = useState(new Date().toLocaleTimeString());
-
-  React.useEffect(function() {
-    setInterval(function() {
-      setTime(new Date().toLocaleTimeString());
-    }, 1000);
-  })
-
-  return <footer className="footer">{time}. We're currently open</footer>
+  return <footer className="footer">
+    
+      {isOpen ? ( 
+        <Order closeHour={closeHour} openHour={openHour}/>
+       ) : (
+        <p> 
+          We're happy to welcome you between {openHour}:00 and {closeHour}:00. 
+        </p>
+      )}
+    </footer>
 }
 
+function Order({ closeHour, openHour }) {
+  return <div className="order">
+        <p> We're open from {openHour}:00 to {closeHour}:00. Come visit us or order online.</p>
+        <button className="btn">Order</button>
+      </div>
+}
 
 // React v18
 const root = ReactDOM.createRoot(document.getElementById("root"));
