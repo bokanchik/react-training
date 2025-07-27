@@ -37,7 +37,16 @@ function Form() {
    */
   function handleSubmit(e) {
     e.preventDefault(); // not to reoload the page
-    console.log(e.target);
+
+    if (!description) return;
+
+    const newItem = { description, quantity, packed: false, id: Date.now() };
+
+    console.log(newItem);
+    
+    // set to intial state 
+    setDescription('');
+    setQuantity(1);
   }
 
   return (
