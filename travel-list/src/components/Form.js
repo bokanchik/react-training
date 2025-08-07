@@ -1,27 +1,5 @@
 import { useState } from "react";
 
-export default function App() {
-  const [items, setItems] = useState([]);
-  
-  function handleAddItems(item) {
-    // we need to create a new item and not mutate the original array (react is all about immutibility)
-    setItems((items) => [...items, item]);
-  }
-
-  return (
-    <div className="app">
-      <Logo />
-      <Form onAddItems={handleAddItems} /> {/** we can pass function as props */}
-      <PackingList items={items} />
-      <Stats items={items} />
-    </div>
-  );
-}
-
-function Logo() {
-  return <h1>🏄‍♂️ Far Away 🏄‍♂️</h1>
-}
-
 /**
  * Controlled elements technique:
  * 
@@ -31,7 +9,7 @@ function Logo() {
  *    we need to listen for the changeEvent on the same value
  * 
  */
-function Form({ onAddItems }) {
+export default function Form({ onAddItems }) {
 
   const [description, setDescription] = useState('');
   const [quantity, setQuantity] = useState(1);
@@ -73,42 +51,5 @@ function Form({ onAddItems }) {
       />
       <button>ADD</button>
     </form>
-  )
-}
-
-//**  
-// Lift up state: 
-// 
-// We take the nedeed state and move it to the closest parent component
-// 
-// */
-function PackingList({ items }) {
-  return (
-    <div className="list">
-      <ul>
-        {items.map((item) => (
-          <Item itemObj={item} key={item.id} />
-        ))}
-      </ul>
-    </div>
-  )
-}
-
-function Item({ itemObj }) {
-  return (
-    <li>
-      <span style={itemObj.packed ? {textDecoration: 'line-through'} : {}}>
-      {itemObj.quantity} {itemObj.description}
-      </span>
-      <button>❌</button>
-    </li>
-  )
-}
-
-function Stats({ items }) {
-  return (
-    <footer className="stats">
-     <em> 💼 You have {items.length} items on your list, and you already packed X (X%)</em>
-    </footer>
   )
 }
