@@ -77,6 +77,7 @@ function App() {
             <SplitBillForm 
               friendName={selectedFriend.name}
               onSplitBill={handleSplitBill}
+              key={selectedFriend.id} // to reset state for each form
             />}
     </div>
   );
