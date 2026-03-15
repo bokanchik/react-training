@@ -68,6 +68,27 @@ function TabContent({ item }) {
     setLikes(likes + 1);
   }
 
+  // state updates are batched and updated asynchronously
+  function handleUndo() {
+      setShowDetails(true);
+      setLikes(0);
+  }
+
+  // batching is working inside setTimeout also (react 18+)
+  function handleUndoLater() {
+      setTimeout(handleUndo, 2000);
+  }
+
+  function handleTripleInc() {
+      // this way, using
+      // the callback function,
+      // we can update the state multiple times in a handler
+
+      setLikes((likes) => likes + 1);
+      setLikes((likes) => likes + 1);
+      setLikes((likes) => likes + 1);
+  }
+
   return (
     <div className="tab-content">
       <h4>{item.summary}</h4>
@@ -81,13 +102,13 @@ function TabContent({ item }) {
         <div className="hearts-counter">
           <span>{likes} ❤️</span>
           <button onClick={handleInc}>+</button>
-          <button>+++</button>
+          <button onClick={handleTripleInc}>+++</button>
         </div>
       </div>
 
       <div className="tab-undo">
-        <button>Undo</button>
-        <button>Undo in 2s</button>
+        <button onClick={handleUndo}>Undo</button>
+        <button onClick={handleUndoLater}>Undo in 2s</button>
       </div>
     </div>
   );
